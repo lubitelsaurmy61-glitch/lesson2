@@ -1,5 +1,5 @@
 from bot_logic import *
-import time, threading, schedule
+import time, threading, schedule, requests
 import telebot
 
 bot = telebot.TeleBot("8203518338:AAHbg-teUaEwBNPlNYny4df9Be41yiXNzjc")
@@ -15,6 +15,12 @@ def send_hello(message):
 @bot.message_handler(commands=['bye'])
 def send_bye(message):
     bot.reply_to(message, "Пока! Удачи!")
+    
+@bot.message_handler(commands=['duck'])
+def duck(message):
+    '''По команде duck вызывает функцию get_duck_image_url и отправляет URL изображения утки'''
+    image_url = get_duck_image_url()
+    bot.reply_to(message, image_url)
 
 @bot.message_handler(commands=['pass'])    
 def send_password(message):
@@ -37,7 +43,7 @@ def send_welcome(message):
 
 
 def beep(chat_id) -> None:
-    """Отправьте звуковое сообщение."""
+    """Отправляю звуковое сообщение."""
     bot.send_message(chat_id, text='Бип!')
 
 
@@ -59,6 +65,11 @@ def unset_timer(message):
 def send_emodji(message):
     emodji = gen_emodji()
     bot.reply_to(message, f"Вот эмоджи: {emodji}")
+    
+@bot.message_handler(commands=['random_number'])
+def rn(message):
+    rand_n = random.randint(0, 100)
+    bot.reply_to(message, f'Рандомное число: {rand_n}')
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
